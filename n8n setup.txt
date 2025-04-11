@@ -1,0 +1,316 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "5b410409-5b0b-47bd-b413-5b9b1000a063",
+      "name": "When chat message received",
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -180,
+        -260
+      ],
+      "webhookId": "a889d2ae-2159-402f-b326-5f61e90f602e"
+    },
+    {
+      "parameters": {
+        "content": "## 👋 Welcome to the Crann Use-Case!\nThis example shows how to build an AI Agent that interacts external tools to get information distributed\n\n### 1. Connecttions go through the localhiost installation, and use the api's of these docker instances\n- Make sure all the required containers are running, and that connectivity over name is possible in the connected docker network.\n- Select the appropriate nodes and give the correct naming for the connections in your environment\n\n### 2. Ready to test it?\nClick Chat below and start asking questions!",
+        "height": 489,
+        "width": 499,
+        "color": 6
+      },
+      "id": "eae35513-07c2-4de2-a795-a153b6934c1b",
+      "name": "Sticky Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -460,
+        -600
+      ]
+    },
+    {
+      "parameters": {
+        "model": "llama3.1:8b",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOllama",
+      "typeVersion": 1,
+      "position": [
+        920,
+        -160
+      ],
+      "id": "5fb17ed8-162e-4faf-ab34-56806cbd3b20",
+      "name": "Ollama Chat Model",
+      "credentials": {
+        "ollamaApi": {
+          "id": "vO1A8iKGCrhuHoDw",
+          "name": "Ollama account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fromEmail": "Democenter-AILAB@Admin.Local",
+        "toEmail": "Admin@Admin.Local",
+        "subject": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Subject', ``, 'string') }}",
+        "html": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('HTML', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.emailSendTool",
+      "typeVersion": 2.1,
+      "position": [
+        1260,
+        -160
+      ],
+      "id": "d6fa61c0-54a5-4cfc-9cf1-9d8f15b1718e",
+      "name": "Send Email",
+      "webhookId": "52a12a9f-aa75-4a8e-8c85-637fd3ec48c5",
+      "credentials": {
+        "smtp": {
+          "id": "Fxxty2DP3UVQg2Av",
+          "name": "SMTP account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://whisper-webui-app-1:7860/gradio_api/call/transcribe_file",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"data\": [\n    [\n      {\n        \"path\": \"https://github.com/gradio-app/gradio/raw/main/test/test_files/sample_file.pdf\"\n      }\n    ],\n    \"Hello!!\",\n    true,\n    true,\n    \"SRT\",\n    true,\n    \"tiny.en\",\n    \"afrikaans\",\n    true,\n    3,\n    3,\n    3,\n    \"int8\",\n    3,\n    3,\n    true,\n    0,\n    \"Hello!!\",\n    0,\n    3,\n    3,\n    3,\n    3,\n    \"Hello!!\",\n    true,\n    \"Hello!!\",\n    3,\n    true,\n    \"Hello!!\",\n    \"Hello!!\",\n    3,\n    3,\n    3,\n    \"Hello!!\",\n    3,\n    3,\n    3,\n    true,\n    true,\n    0,\n    3,\n    3,\n    3,\n    3,\n    true,\n    \"cpu\",\n    \"Hello!!\",\n    true,\n    true,\n    \"UVR-MDX-NET-Inst_HQ_4\",\n    \"cpu\",\n    3,\n    true,\n    true\n  ]\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        500,
+        -180
+      ],
+      "id": "893bea3d-0353-408a-a8fd-d8c58e151463",
+      "name": "HTTP Whisper-EventID"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://whisper-webui-app-1:7860/gradio_api/call/transcribe_youtube/",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"data\": [\n    \"https://www.youtube.com/shorts/juxD5boOwdM?feature=share\",\n    \"txt\",\n    false,\n    \"large-v2\",\n    \"Automatic Detection\",\n    false,\n    5,\n    -1,\n    0.6,\n    \"float16\",\n    5,\n    1,\n    true,\n    0.5,\n    \"\",\n    0,\n    2.4,\n    1,\n    1,\n    0,\n    \"\",\n    true,\n    \"[-1]\",\n    1,\n    false,\n    \"\",\n    \"\",\n    0,\n    30,\n    0,\n    \"\",\n    0.5,\n    1,\n    24,\n    true,\n    false,\n    0.5,\n    250,\n    9999,\n    1000,\n    2000,\n    false,\n    \"cuda\",\n    \"\",\n    true,\n    false,\n    \"UVR-MDX-NET-Inst_HQ_4\",\n    \"cuda\",\n    256,\n    false,\n    true\n  ]\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        700,
+        -180
+      ],
+      "id": "42583ca2-0e71-46eb-8f9d-35dd17bf9195",
+      "name": "HTTP Request transcribe"
+    },
+    {
+      "parameters": {
+        "url": "https://github.com/renareke/TestFiles/blob/main/Gemma%20%20Paul%20Irwin%20Room%20Interview%20(1).txt",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        580,
+        -380
+      ],
+      "id": "72c6ee6d-27eb-4013-a1bb-8895df04e9ba",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('When chat message received').item.json.chatInput }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=You are a helpful assistant that has to give answers to the questions using the transcript below:\n {{ $json.data }}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        1020,
+        -380
+      ],
+      "id": "09b0faed-04ee-4276-9cc1-0d20fa1c2277",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('When chat message received').item.json.sessionId }}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        1120,
+        -160
+      ],
+      "id": "1406cc51-a181-47ef-bd62-d72c5b758302",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "772cc350-686e-4a2d-ac82-31e31416c513",
+              "leftValue": "={{ $json.chatInput }}",
+              "rightValue": "ProductionFlow",
+              "operator": {
+                "type": "string",
+                "operation": "notContains"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        180,
+        -260
+      ],
+      "id": "0320c248-cd14-47f9-8b63-8692d7fbb9ce",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "content": "## Skip Transcription:\nIf we are in demo mode, we don't want to woit for the transcription",
+        "height": 340,
+        "width": 300
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        80,
+        -440
+      ],
+      "id": "4c03639a-d19a-45d9-b1d8-fd63c9856f27",
+      "name": "Sticky Note1"
+    }
+  ],
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ollama Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Email": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Whisper-EventID": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request transcribe",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request transcribe": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        []
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "HTTP Whisper-EventID",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "templateId": "PT1i+zU92Ii5O2XCObkhfHJR5h9rNJTpiCIkYJk9jHU=",
+    "templateCredsSetupCompleted": true,
+    "instanceId": "e0ca4e57b4e701394f563b8732a27e5063e80515efd4eb8033696536e1beb054"
+  }
+}
