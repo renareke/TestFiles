@@ -1,0 +1,552 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "mode": "insert",
+        "qdrantCollection": {
+          "__rl": true,
+          "value": "={{ $json.sessionId }}",
+          "mode": "id"
+        },
+        "embeddingBatchSize": 500,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreQdrant",
+      "typeVersion": 1.1,
+      "position": [
+        80,
+        360
+      ],
+      "id": "97bfd0d8-9e64-4c91-b14c-b730686cf9c1",
+      "name": "Qdrant Vector Store",
+      "credentials": {
+        "qdrantApi": {
+          "id": "Ywut7d6qUtkWzooI",
+          "name": "QdrantApi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "nomic-embed-text:latest"
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOllama",
+      "typeVersion": 1,
+      "position": [
+        20,
+        700
+      ],
+      "id": "c63f6e3f-9ec7-40d0-9c5d-275507ccdb29",
+      "name": "Embeddings Ollama",
+      "credentials": {
+        "ollamaApi": {
+          "id": "5GFDny6OarBazhte",
+          "name": "Ollama account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "dataType": "binary",
+        "loader": "pdfLoader",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "typeVersion": 1,
+      "position": [
+        160,
+        700
+      ],
+      "id": "ab14dba9-1523-48ae-b9be-f38f7a5ed343",
+      "name": "Default Data Loader"
+    },
+    {
+      "parameters": {
+        "chunkSize": 500,
+        "chunkOverlap": 50
+      },
+      "type": "@n8n/n8n-nodes-langchain.textSplitterTokenSplitter",
+      "typeVersion": 1,
+      "position": [
+        200,
+        860
+      ],
+      "id": "53fdd58c-2606-4607-aa6b-5e15638c612a",
+      "name": "Token Splitter"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('chat received').item.json.chatInput }}",
+        "options": {
+          "systemMessage": "As a highly specialized AI assistant, my primary function is to retrieve relevant information from the vector database to answer user queries. When responding, I must access and utilize only the exact content stored in the database, without relying on external knowledge sources or making assumptions."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        640,
+        60
+      ],
+      "id": "43ab3880-c528-4f11-86d4-867ae2e85b5b",
+      "name": "AI Agent",
+      "executeOnce": true
+    },
+    {
+      "parameters": {
+        "model": "llama3.2:latest",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOllama",
+      "typeVersion": 1,
+      "position": [
+        620,
+        380
+      ],
+      "id": "6b631668-9166-4682-9b46-98b727fb64e2",
+      "name": "Ollama Chat Model",
+      "credentials": {
+        "ollamaApi": {
+          "id": "5GFDny6OarBazhte",
+          "name": "Ollama account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "name": "Knowledgebase",
+        "description": "the knowledge base to answer use questions",
+        "topK": 50
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolVectorStore",
+      "typeVersion": 1,
+      "position": [
+        1040,
+        560
+      ],
+      "id": "cb7b7aa2-bb00-4925-815c-40fe0b54ed1e",
+      "name": "Answer questions with a vector store"
+    },
+    {
+      "parameters": {
+        "qdrantCollection": {
+          "__rl": true,
+          "value": "={{ $('chat received').item.json.sessionId }} {{ $('chat received').item.json.sessionId }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreQdrant",
+      "typeVersion": 1.1,
+      "position": [
+        920,
+        720
+      ],
+      "id": "5b30d3f5-38b8-4ec7-aad2-db960913a53f",
+      "name": "Qdrant Vector Store1",
+      "credentials": {
+        "qdrantApi": {
+          "id": "Ywut7d6qUtkWzooI",
+          "name": "QdrantApi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "nomic-embed-text:latest"
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOllama",
+      "typeVersion": 1,
+      "position": [
+        940,
+        880
+      ],
+      "id": "9d3ae65f-441d-4ec7-8176-c7ca75c0007e",
+      "name": "Embeddings Ollama1",
+      "credentials": {
+        "ollamaApi": {
+          "id": "5GFDny6OarBazhte",
+          "name": "Ollama account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "llama3.2:latest",
+        "options": {
+          "temperature": 0
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOllama",
+      "typeVersion": 1,
+      "position": [
+        1220,
+        800
+      ],
+      "id": "a032ed45-72ff-490e-b1b9-1215adabaef4",
+      "name": "Ollama Chat Model1",
+      "credentials": {
+        "ollamaApi": {
+          "id": "5GFDny6OarBazhte",
+          "name": "Ollama account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('chat received').item.json.sessionId }}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        760,
+        360
+      ],
+      "id": "5099743c-6760-43d7-8c50-11fb64b9ab79",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "b57b8a03-81c2-46a2-b1ba-0a32d95e6ae8",
+              "leftValue": "={{ $json.files }}",
+              "rightValue": "",
+              "operator": {
+                "type": "array",
+                "operation": "notExists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -280,
+        80
+      ],
+      "id": "45912e30-f194-4e7c-b52b-d1ff5a02c0b6",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "path": "fd004ef3-1972-416e-bedc-1433ccad0298",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -540,
+        340
+      ],
+      "id": "12a5462e-2947-45a3-bdbf-d5577f79609d",
+      "name": "Webhook",
+      "webhookId": "fd004ef3-1972-416e-bedc-1433ccad0298"
+    },
+    {
+      "parameters": {
+        "content": "# The Vector-Powered Detective Squad\n\nLet me introduce you to the curious little world inside this *n8n flow**   \nwhere AI models, vector databases, nd document splitters join forces like theAvengers,  \nbut withmore JSON and less spandex.\n\n--\n\n##  It all starts when someone sends a chat message\n\nThe `When Chat Message Received` node acts like the friendly receptionist.  \nIf you bring a file, it gives it a warm welcome.  \nIf you don't, istill makes sure your question gets passed on tohe brains of the operation.\n\n---\n\n##  Documents? Straight to processing!\n\nIf you send in a file, it doesn't jut sitthere gathering digtal dust.  \nFirst, our `Default Data Loader` and `Token Splitter` chop it up into bite-sized knowledge chunks  \n(because AI gets indgestion fromlarge documents).\n\n---\n\n##  Embedding School fr AI\n\nThose chunks are snt to `Embeddings Ollama`, where each piece learns how to describe itself in vector-speak   \nthelanguage of AI memory.  \nThis is like converting plain text intocoordinates on a galaxy map.\n\n---\n##  Qdrant  the Vctor Archive\n\nOnce our knowledge isfluent in vector-speak, its sored in `Qdrant Vector Store`.  \nThink of this as the worlds most organized and overachieving librarian:  \nif you ever ask a question, this is where it looks first.\n\n---\n\n##  The Agent  Your AI Butler\n\nEnter the `AI Agent` node. This ones the classy butler  it doesnt make wild gueses.  \nIts golden rule:  \n> _\"Only answer with facts from theVector Store.\"_  \n\nNo Wikipedia dives, no creative storyteling  just pure, relevant knowledg from your documents.\n---\n\n##  Ollama, the Cat Model\n\nNow if the Agnt ever needs a second opinion orsome extra language flair,  \n`Ollama Chat Model` steps in. \nIts like the Shakspeare of the team: great with words,  \nbutonly allowed to speak afterchecking the facts.\n\n--\n\n##  Memory: Because AI Has Goldfish Syndrome\n\nTo prevent awkward \"who are you again?\" moments in conversations,  \n`Simple Memory` keeps track of past interactions.  \nNow theAI can hold aproper conversation, rather than rebooting its social skils every time.\n\n--\n\n##  Second Round of Knowledge\n\nTheres also a second mini-team at he bottom:  \n`Qdrant Vector Store1`, `Embeddings Ollama1`, `Ollama Chat Model1`   \nbasiclly the same process, but this time ven more tailored for pecise answers.  \nLike having two chefs chck your soupbefore serving it.\n\n---\n\n##  In Short\n\n- Your mesage comes in  \n- The AI checks if ther's suporting knowledg  \n- If so, it fetches only what's relevant  \n-The answer is composed politely and accurately  no more, no less.\n---\n\n##  Moral of the Story:\n\nThis flow is a **super-efficient, vector-powered librarian + AI detctive team**.  \nYou feed itdocuments, and itbecomes anexpert on them   \nno external distractions, no \"I think,\" just: \n\n> _\"Heres what I know.\"_\n\n---\n",
+        "height": 640,
+        "width": 520
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -940,
+        60
+      ],
+      "id": "60154bac-bec6-47a1-92d9-b8c4b01f9047",
+      "name": "social skills every time."
+    },
+    {
+      "parameters": {
+        "fromEmail": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('From_Email', ``, 'string') }}",
+        "toEmail": "AnySystem@system.remote",
+        "subject": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Subject', ``, 'string') }}",
+        "html": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('HTML', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.emailSendTool",
+      "typeVersion": 2.1,
+      "position": [
+        1220,
+        240
+      ],
+      "id": "59f09cc1-543b-4b26-bcfe-0bcbab8ca648",
+      "name": "Send Email",
+      "webhookId": "d3e1f44a-b36a-4ac1-9538-da8a44912906",
+      "credentials": {
+        "smtp": {
+          "id": "UpI1SaPI0tAK5fsE",
+          "name": "SMTP account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {
+          "allowFileUploads": true
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -540,
+        80
+      ],
+      "id": "185d5ff6-8cc0-4c25-9538-3bb228867433",
+      "name": "chat received",
+      "webhookId": "7f2f3e1b-9ba8-4dc3-9c3a-8892d0b28a63"
+    },
+    {
+      "parameters": {
+        "content": "##  Documents? Straight to processing!\n\nIf you send in a file, it doesn't jut sitthere gathering digtal dust.  \nFirst, our `Default Data Loader` and `Token Splitter` chop it up into bite-sized knowledge chunks  \n(because AI gets indgestion fromlarge documents).",
+        "height": 400,
+        "width": 320,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -400,
+        -180
+      ],
+      "id": "7e13edf4-9eaa-43dd-896d-6c3e49eb4398",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "##  Qdrant  the Vctor Archive\n\nOnce our knowledge isfluent in vector-speak, its sored in `Qdrant Vector Store`.  \nThink of this as the worlds most organized and overachieving librarian:  \nif you ever ask a question, this is where it looks first.\n\n\n\n\n\n\n\n\n\n\n\n\n##  Embedding School fr AI\n\nThose chunks are snt to `Embeddings Ollama`, where each piece learns how to describe itself in vector-speak   \nthelanguage of AI memory.  \nThis is like converting plain text intocoordinates on a galaxy map\n\n\n\n\n\n\n\n\n\n\n\n",
+        "height": 820,
+        "width": 460,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -20,
+        180
+      ],
+      "id": "ca8c73a3-33f2-405b-9925-816811390b01",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "##  The Agent  Your AI Butler\n\nEnter the `AI Agent` node. This ones the classy butler  it doesnt make wild gueses.  \nIts golden rule:  \n> _\"Only answer with facts from theVector Store.\"_  \n\nNo Wikipedia dives, no creative storyteling  just pure, relevant knowledg from your documents.\n\n\n\n\n\n\n\n\n\n\n\n##  Ollama, the Cat Model\n\nNow if the Agnt ever needs a second opinion orsome extra language flair,  \n`Ollama Chat Model` steps in. \nIts like the Shakspeare of the team: great with words,  \nbutonly allowed to speak afterchecking the facts.\n",
+        "height": 1200,
+        "width": 780,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        580,
+        -140
+      ],
+      "id": "d9394e41-a659-4c39-9c42-d8e4dcaeee06",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "height": 580,
+        "width": 440,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        900,
+        440
+      ],
+      "id": "cc801d8e-6d37-4770-a269-330ee84627bc",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "height": 220
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1080,
+        160
+      ],
+      "id": "4bbc607c-c49c-4cf1-8a32-aafb673f9ce6",
+      "name": "Sticky Note4"
+    }
+  ],
+  "connections": {
+    "Qdrant Vector Store": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings Ollama": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Qdrant Vector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Default Data Loader": {
+      "ai_document": [
+        [
+          {
+            "node": "Qdrant Vector Store",
+            "type": "ai_document",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Token Splitter": {
+      "ai_textSplitter": [
+        [
+          {
+            "node": "Default Data Loader",
+            "type": "ai_textSplitter",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ollama Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Answer questions with a vector store": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Qdrant Vector Store1": {
+      "ai_vectorStore": [
+        [
+          {
+            "node": "Answer questions with a vector store",
+            "type": "ai_vectorStore",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings Ollama1": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Qdrant Vector Store1",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ollama Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Answer questions with a vector store",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Qdrant Vector Store",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        []
+      ]
+    },
+    "Send Email": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "chat received": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "7ee9c8f0e73cc64194d4be011acb42c10a8f3d76dd3f9cbffef28eb88bb6e26c"
+  }
+}
