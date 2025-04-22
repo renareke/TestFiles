@@ -1,0 +1,161 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainRetrievalQa",
+      "typeVersion": 1.5,
+      "position": [
+        740,
+        -260
+      ],
+      "id": "5fa87ebb-c690-4124-9f91-a36089377819",
+      "name": "Question and Answer Chain"
+    },
+    {
+      "parameters": {
+        "model": "llama3.2:latest",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOllama",
+      "typeVersion": 1,
+      "position": [
+        740,
+        -40
+      ],
+      "id": "1a53cca7-ef67-4c91-b359-8723e789cdee",
+      "name": "Ollama Chat Model2",
+      "credentials": {
+        "ollamaApi": {
+          "id": "SFDGPffzhw46TSzF",
+          "name": "Ollama account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.retrieverVectorStore",
+      "typeVersion": 1,
+      "position": [
+        880,
+        -60
+      ],
+      "id": "af3fa04a-949c-4aa4-be87-902fb05de9e9",
+      "name": "Vector Store Retriever"
+    },
+    {
+      "parameters": {
+        "qdrantCollection": {
+          "__rl": true,
+          "value": "={{ $('chat received').item.json.sessionId }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreQdrant",
+      "typeVersion": 1.1,
+      "position": [
+        880,
+        120
+      ],
+      "id": "e2d59672-bddd-4e9c-b999-a0bdcdf31864",
+      "name": "Qdrant Vector Store2",
+      "credentials": {
+        "qdrantApi": {
+          "id": "kUVdoz1oYYaZ2ju5",
+          "name": "QdrantApi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "nomic-embed-text:latest"
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOllama",
+      "typeVersion": 1,
+      "position": [
+        880,
+        260
+      ],
+      "id": "ca1a9b5b-73b7-4e77-a9eb-155607a0e0a4",
+      "name": "Embeddings Ollama2",
+      "credentials": {
+        "ollamaApi": {
+          "id": "SFDGPffzhw46TSzF",
+          "name": "Ollama account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "height": 800,
+        "width": 540
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        640,
+        -360
+      ],
+      "id": "e27087d7-b277-4280-b245-8d3e3656d6d0",
+      "name": "Sticky Note5"
+    }
+  ],
+  "connections": {
+    "Question and Answer Chain": {
+      "main": [
+        []
+      ]
+    },
+    "Ollama Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Question and Answer Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Vector Store Retriever": {
+      "ai_retriever": [
+        [
+          {
+            "node": "Question and Answer Chain",
+            "type": "ai_retriever",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Qdrant Vector Store2": {
+      "ai_vectorStore": [
+        [
+          {
+            "node": "Vector Store Retriever",
+            "type": "ai_vectorStore",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings Ollama2": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Qdrant Vector Store2",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "110edd6371648013847111914948fae295f83480b17a8f4b0d1152b3b210d20b"
+  }
+}
