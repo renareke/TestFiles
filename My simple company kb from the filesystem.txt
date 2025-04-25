@@ -1,0 +1,177 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "model": "nomic-embed-text:latest"
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOllama",
+      "typeVersion": 1,
+      "position": [
+        240,
+        1940
+      ],
+      "id": "8c82e653-283e-47ef-b8f6-83f5e03cc633",
+      "name": "Embeddings Ollama3",
+      "credentials": {
+        "ollamaApi": {
+          "id": "SFDGPffzhw46TSzF",
+          "name": "Ollama account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "##  Company knowledgebase\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n##  Chunk the document in AI readable content, make it searchable at a granular level.\n\n\n\n\n\n\n\n\n\n\n\n",
+        "height": 820,
+        "width": 460,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        200,
+        1400
+      ],
+      "id": "79a510e6-3605-47e3-b137-f8d94c456787",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "triggerOn": "folder",
+        "path": "/home/shared_data",
+        "events": [
+          "add"
+        ],
+        "options": {}
+      },
+      "type": "n8n-nodes-base.localFileTrigger",
+      "typeVersion": 1,
+      "position": [
+        -320,
+        1600
+      ],
+      "id": "e2d3920a-0c2b-4cb7-851c-1c8b38871fac",
+      "name": "Local File Trigger1"
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "qdrantCollection": {
+          "__rl": true,
+          "value": "Company_Knowledgebase",
+          "mode": "id"
+        },
+        "embeddingBatchSize": 500,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreQdrant",
+      "typeVersion": 1.1,
+      "position": [
+        300,
+        1600
+      ],
+      "id": "e501826a-35c8-43f6-909d-1470652521d4",
+      "name": "Company knowledgebase",
+      "credentials": {
+        "qdrantApi": {
+          "id": "kUVdoz1oYYaZ2ju5",
+          "name": "QdrantApi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "dataType": "binary",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "typeVersion": 1,
+      "position": [
+        380,
+        1940
+      ],
+      "id": "7ccd55eb-23c1-453a-b55c-32d41b157320",
+      "name": "Data Loader"
+    },
+    {
+      "parameters": {
+        "chunkSize": 500,
+        "chunkOverlap": 50
+      },
+      "type": "@n8n/n8n-nodes-langchain.textSplitterTokenSplitter",
+      "typeVersion": 1,
+      "position": [
+        420,
+        2100
+      ],
+      "id": "67811c41-a2ae-4cf1-948e-0a231cef5858",
+      "name": "Chunker"
+    },
+    {
+      "parameters": {
+        "content": "## Watch a folder on new files\n",
+        "height": 260,
+        "width": 360
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -440,
+        1520
+      ],
+      "id": "d4a12081-0de1-4cfc-9550-ebc2f7d48478",
+      "name": "Sticky Note"
+    }
+  ],
+  "connections": {
+    "Embeddings Ollama3": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Company knowledgebase",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Local File Trigger1": {
+      "main": [
+        [
+          {
+            "node": "Company knowledgebase",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Data Loader": {
+      "ai_document": [
+        [
+          {
+            "node": "Company knowledgebase",
+            "type": "ai_document",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Chunker": {
+      "ai_textSplitter": [
+        [
+          {
+            "node": "Data Loader",
+            "type": "ai_textSplitter",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "110edd6371648013847111914948fae295f83480b17a8f4b0d1152b3b210d20b"
+  }
+}
