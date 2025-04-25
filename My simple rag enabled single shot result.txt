@@ -1,0 +1,570 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "b57b8a03-81c2-46a2-b1ba-0a32d95e6ae8",
+              "leftValue": "={{ $json.files }}",
+              "rightValue": "",
+              "operator": {
+                "type": "array",
+                "operation": "notExists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -1440,
+        340
+      ],
+      "id": "046a7a4a-d86c-49f9-8668-22cc3fe8e184",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "options": {
+          "allowFileUploads": true
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -1820,
+        340
+      ],
+      "id": "b218d4df-b424-4dc2-95cb-fcee45d19f02",
+      "name": "chat received",
+      "webhookId": "7f2f3e1b-9ba8-4dc3-9c3a-8892d0b28a63"
+    },
+    {
+      "parameters": {
+        "content": "##  Additional info for personal session knowledgebase",
+        "height": 400,
+        "width": 320,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1560,
+        120
+      ],
+      "id": "c0e67233-e964-4424-80d9-6435f012c65b",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "##  Personal session knowledgebase\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n##  Chunk the document in AI readable content, make it searchable at a granular level.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
+        "height": 820,
+        "width": 460,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1180,
+        400
+      ],
+      "id": "35de1aaf-0ae6-4798-81b8-c42c0e257196",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "model": "nomic-embed-text:latest"
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOllama",
+      "typeVersion": 1,
+      "position": [
+        -500,
+        980
+      ],
+      "id": "14fdc384-1b03-4fc6-b595-cc6ef91b654b",
+      "name": "Embeddings Ollama3",
+      "credentials": {
+        "ollamaApi": {
+          "id": "SFDGPffzhw46TSzF",
+          "name": "Ollama account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "Let's break down the workflow into steps, using the analogy of a real patient care center. \n\nStep 1: Receive Transcript \n\nImagine you're the receptionist at a patient care center. A patient comes in for an intake interview with a caregiver. You receive a transcript of their conversation, which is like a written note about what was discussed during the meeting. \n\nIn our workflow, this step corresponds to receiving the transcript file from a storage system (e.g., Google Drive or Dropbox). The n8n node Get File retrieves the transcript and makes it available for further processing. \n\nStep 2: Preprocessing \n\nNow that we have the transcript, we need to prepare it for analysis. This is like reviewing the patient's medical history before their appointment. We want to make sure everything is in order and ready for the next step. \n\nIn our workflow, this step involves several nodes: \n\n     Split Transcript: This node breaks down the transcript into smaller sections, like chapters or paragraphs.\n     Remove Stop Words: These are common words that don't add much value to the conversation (e.g., \"the,\" \"and,\" etc.). We remove them to focus on more meaningful language.\n     \n\nThink of it like editing a patient's medical chart. We're tidying up the data so it's easier to work with later on. \n\nStep 3: Named Entity Recognition (NER) \n\nNamed Entity Recognition is like identifying key information in a patient's chart, such as their name, age, and medication history. This helps us understand who they are and what might be relevant to their care. \n\nIn our workflow, this step uses the AI Agent1 node (a language model) to identify named entities within the transcript. The identified entities are then extracted and stored for later use. \n\nStep 4: Sentiment Analysis \n\nNow that we have some key information, let's examine how the patient felt during the conversation. Was it a positive or negative experience? This is like assessing a patient's emotional state before their appointment. \n\nIn our workflow, this step uses another AI Agent1 node to analyze the sentiment of the conversation. The output provides an overall assessment of the patient's emotions and satisfaction level. \n\nStep 5: Vectorization \n\nVectorization is like creating a map of the patient's medical history. We take various pieces of information (e.g., symptoms, treatments) and turn them into numerical representations that can be analyzed together. \n\nIn our workflow, this step uses the Qdrant Vector Store node to create vector embeddings for each named entity identified earlier. These vectors will help us understand relationships between different concepts in the transcript. \n\nStep 6: Clustering \n\nWith our vectorized data, we can now group similar patients or conversations together. This is like identifying patient clusters based on their medical profiles. \n\nIn our workflow, this step uses a clustering algorithm to identify patterns and connections within the vector embeddings. The output provides an overview of how different conversations are related to each other. \n\nStep 7: Recommendation Generation \n\nFinally, we use the insights from our analysis to provide recommendations for treatments or services that might be relevant to the patient. This is like a healthcare professional reviewing a patient's chart and suggesting personalized care plans. \n\nIn our workflow, this step uses a combination of the extracted entities, sentiment analysis output, and clustering results to generate targeted recommendations. \n\nBy explaining each step in this way, non-technical users can understand how the workflow is designed to support patient care. They'll see that it's not just about processing text data; it's about using AI-powered insights to provide more effective and personalized care for patients. ",
+        "height": 1260,
+        "width": 1240
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -3520,
+        -140
+      ],
+      "id": "3dbb848f-57be-44e3-a4ec-9bcd7ccf17f5",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "## Large Language Reasoning Core\n",
+        "height": 780,
+        "width": 800,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -640,
+        -80
+      ],
+      "id": "e0851c46-5096-40bd-824b-22f3ef7b789f",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "## Trigger \nchat message",
+        "height": 400,
+        "width": 440
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -2120,
+        120
+      ],
+      "id": "fcc9ee55-5f85-467c-ade7-5df7b8f0e632",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "llama3.2:latest",
+          "mode": "list",
+          "cachedResultName": "llama3.2:latest"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -520,
+        420
+      ],
+      "id": "df3050b1-ea44-4c4d-b4a5-209c08ddfa63",
+      "name": "Large Language Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "kVRZCzVT1oosF5Vs",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('chat received').item.json.sessionId }}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        -340,
+        420
+      ],
+      "id": "f33ac6ce-fbf0-45c4-806d-5cf73708e801",
+      "name": "Session memory"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('chat received').item.json.chatInput }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        -340,
+        140
+      ],
+      "id": "39b8f89d-7d8a-4373-871f-52994e1747ed",
+      "name": "Agent",
+      "executeOnce": true
+    },
+    {
+      "parameters": {
+        "model": "nomic-embed-text:latest"
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOllama",
+      "typeVersion": 1,
+      "position": [
+        -1120,
+        920
+      ],
+      "id": "ff0ecdef-90bf-4a71-9149-bde0ef254881",
+      "name": "Embedding AI",
+      "credentials": {
+        "ollamaApi": {
+          "id": "SFDGPffzhw46TSzF",
+          "name": "Ollama account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "dataType": "binary",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "typeVersion": 1,
+      "position": [
+        -1000,
+        920
+      ],
+      "id": "e9944585-b642-437f-b477-c3f87d5e33c4",
+      "name": "Data Loader"
+    },
+    {
+      "parameters": {
+        "chunkSize": 500,
+        "chunkOverlap": 50
+      },
+      "type": "@n8n/n8n-nodes-langchain.textSplitterTokenSplitter",
+      "typeVersion": 1,
+      "position": [
+        -980,
+        1100
+      ],
+      "id": "38f68702-6ec9-4bed-89c6-0bd4eb2bd235",
+      "name": "Chunker"
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "qdrantCollection": {
+          "__rl": true,
+          "value": "={{ $json.sessionId }}",
+          "mode": "id"
+        },
+        "embeddingBatchSize": 500,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreQdrant",
+      "typeVersion": 1.1,
+      "position": [
+        -1100,
+        600
+      ],
+      "id": "568b9882-abb5-498b-88e0-9bf0cca22620",
+      "name": "Personal knowledgebase - ingest",
+      "credentials": {
+        "qdrantApi": {
+          "id": "kUVdoz1oYYaZ2ju5",
+          "name": "QdrantApi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "nomic-embed-text:latest"
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOllama",
+      "typeVersion": 1,
+      "position": [
+        -20,
+        1000
+      ],
+      "id": "1a1a7b5a-cb0a-4a65-a342-ec3da90b30e2",
+      "name": "Embeddings Ollama",
+      "credentials": {
+        "ollamaApi": {
+          "id": "SFDGPffzhw46TSzF",
+          "name": "Ollama account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fromEmail": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('From_Email', ``, 'string') }}",
+        "toEmail": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('To_Email', ``, 'string') }}",
+        "subject": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Subject', ``, 'string') }}",
+        "html": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('HTML', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.emailSendTool",
+      "typeVersion": 2.1,
+      "position": [
+        280,
+        320
+      ],
+      "id": "533550f9-6506-4e32-8973-905a471fee9d",
+      "name": "Send Email1",
+      "webhookId": "9cb697c2-243e-4d05-99b5-10d838b5dbb5",
+      "credentials": {
+        "smtp": {
+          "id": "O4AJhjxNUYahzxIs",
+          "name": "SMTP account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Get your information from the ingested files",
+        "height": 440,
+        "width": 900,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -620,
+        740
+      ],
+      "id": "2c7e17ac-a735-401b-9b93-7eec4bd6bf56",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "content": "## Actions that can be done",
+        "height": 340,
+        "width": 380,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        180,
+        220
+      ],
+      "id": "3fc71247-0d32-471d-8abf-8ad869d3bd9a",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "mode": "retrieve-as-tool",
+        "toolName": "knowledgebase",
+        "toolDescription": "this contains the Personal knowledgebase of the user",
+        "qdrantCollection": {
+          "__rl": true,
+          "value": "={{ $('chat received').item.json.sessionId }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreQdrant",
+      "typeVersion": 1.1,
+      "position": [
+        -500,
+        840
+      ],
+      "id": "43d7b118-7a07-4bfd-bc71-f9f3c93a83ee",
+      "name": "Personal - consult",
+      "credentials": {
+        "qdrantApi": {
+          "id": "kUVdoz1oYYaZ2ju5",
+          "name": "QdrantApi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "retrieve-as-tool",
+        "toolName": "knowledgebase",
+        "toolDescription": "this contains the company knowledgebase of the user",
+        "qdrantCollection": {
+          "__rl": true,
+          "value": "Company_Knowledgebase",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreQdrant",
+      "typeVersion": 1.1,
+      "position": [
+        -40,
+        820
+      ],
+      "id": "2af9899f-dbc9-426a-a307-c70d641f8967",
+      "name": "Company - consult1",
+      "credentials": {
+        "qdrantApi": {
+          "id": "kUVdoz1oYYaZ2ju5",
+          "name": "QdrantApi account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Agent",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Personal knowledgebase - ingest",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "chat received": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings Ollama3": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Personal - consult",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Large Language Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Session memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agent": {
+      "main": [
+        []
+      ]
+    },
+    "Embedding AI": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Personal knowledgebase - ingest",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Data Loader": {
+      "ai_document": [
+        [
+          {
+            "node": "Personal knowledgebase - ingest",
+            "type": "ai_document",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Chunker": {
+      "ai_textSplitter": [
+        [
+          {
+            "node": "Data Loader",
+            "type": "ai_textSplitter",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Personal knowledgebase - ingest": {
+      "main": [
+        [
+          {
+            "node": "Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings Ollama": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Company - consult1",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Email1": {
+      "ai_tool": [
+        [
+          {
+            "node": "Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Personal - consult": {
+      "ai_tool": [
+        [
+          {
+            "node": "Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Company - consult1": {
+      "ai_tool": [
+        [
+          {
+            "node": "Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "110edd6371648013847111914948fae295f83480b17a8f4b0d1152b3b210d20b"
+  }
+}
